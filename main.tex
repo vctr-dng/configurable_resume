@@ -3,7 +3,10 @@
 \usepackage[a4paper, left=2cm, right=2cm, top=2cm, bottom=2cm, footskip=0cm]{geometry}
 \usepackage[english]{babel}
 \usepackage{fancyhdr}
+\usepackage{fontspec}
+\usepackage{parskip}
 \usepackage{hyperref}
+\usepackage{xifthen}
 
 \usepackage{lipsum}
 \usepackage{layout}
@@ -11,25 +14,28 @@
 \pagestyle{fancy} % Set the page style to 'fancy'
 \fancyhf{} % Clear all header and footer fields
 \renewcommand{\headrulewidth}{0pt} % Remove the header rule line
+\setlength{\parskip}{0pt} % Set vertical space between paragraphs to zero
 
 \newcommand{\setfullname}[2]{%
     \newcommand{\fullname}{#1~#2}%
 }
 \newcommand{\displayfullname}{%
-  \begin{center}
+    \begin{center}
     {\fontsize{\namefontsize}{\dimexpr1.2\namefontsize}\selectfont\fullname}
-  \end{center}%
+    \end{center}
+    \namesep % Insert the defined vertical space
 }
 
 % Define individual information commands
+\newcommand{\location}[1]{
+    \def\mylocation{#1}
+}
 \newcommand{\tel}[1]{%
   \def\mytel{\href{tel:#1}{#1}}%
 }
 \newcommand{\email}[1]{%
   \def\myemail{\href{mailto:#1}{#1}}%
 }
-
-\newcommand{\location}[1]{\def\mylocation{#1}}
 \newcommand{\github}[1]{%
   \def\mygithub{\href{https://github.com/#1}{GitHub: #1}}%
 }
@@ -38,24 +44,40 @@
 }
 
 % Define the command to format the contact information
-\newcommand{\contactinfo}{%
-    \begin{center}
-    \mytel\separator
-    \myemail\separator
-    \mylocation\separator
-    \mygithub\separator
-    \mylinkedin
+\newcommand{\displaycontactinfo}{%
+  \begin{center}
+    \ifthenelse{\isundefined{\mylocation}}{}{%
+        \mylocation\separator
+    }%
+    \ifthenelse{\isundefined{\mytel}}{}{%
+        \mytel\separator
+    }%
+    \ifthenelse{\isundefined{\myemail}}{}{%
+        \myemail\separator
+    }%
+    \ifthenelse{\isundefined{\mygithub}}{}{%
+        \mygithub\separator
+    }%
+    \ifthenelse{\isundefined{\mylinkedin}}{}{%
+        \mylinkedin
+    }%
     \end{center}
 }
+
+\setmainfont{Times New Roman}
 
 % Information
 \newcommand{\namefontsize}{14pt}
 \setfullname{John}{Doe}
 
+% Define the vertical space between full name and contact info
+\newcommand{\namesep}{\vspace{0.5em}}
+
 \newcommand{\separator}{\ | \ }
+% Comment unused information
+\location{City, Country}
 \tel{+1 234 567 890}
 \email{john.doe@mail.com}
-\location{City, Country}
 \github{john\_doe}
 \linkedin{john\_doe}
 
@@ -63,7 +85,7 @@
 
 \begin{document}
 \displayfullname
-\contactinfo
+\displaycontactinfo
 
 \newpage
 \layout*
