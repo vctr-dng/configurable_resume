@@ -7,7 +7,7 @@
 \usepackage{parskip}
 \usepackage{hyperref}
 \usepackage{xifthen}
-
+\usepackage{titlesec}
 \usepackage{lipsum}
 \usepackage{layout}
 
@@ -83,6 +83,29 @@
 
 \fancyfoot[c]{References available upon request}  % Centered footer
 
+% \titleformat{\section}[block]{\normalfont\Large\bfseries}{\thesection}{1em}{}
+% \titlespacing*{\section}{0pt}{0pt}{0pt}
+
+\titleformat{\section}       % Customise the \section command
+{\Large\scshape\raggedright} % Make the \section headers large (\Large),
+                             % small capitals (\scshape) and left aligned (\raggedright)
+  {}{0em}            % Can be used to give a prefix to all sections, like 'Section ...'
+  {}                 % Can be used to insert code before the heading
+  [\titlerule]       % Inserts a horizontal line after the heading
+  \titleformat{\subsection}
+  {\large\scshape\raggedright}
+  {}{0em}
+  {}
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+
+\newcommand{\sectionline}[1]{
+  \noindent
+  \makebox[0pt][l]{#1} % Print the section title without advancing to the next line
+  \rule[\baselineskip]{\linewidth}{0.4pt} % Draw a horizontal line from the end of the title to the right margin
+  \vspace{1em} % Add some vertical space after the section
+}
+
 \begin{document}
 \displayfullname
 \displaycontactinfo
@@ -94,6 +117,15 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 \vspace{0.75em}
 
 \section*{Experience}
+
+\vspace{0.5em}
+\subsection{Company, Location}
+Role, Date
+\begin{itemize}
+	\item
+	\item
+	\item
+\end{itemize}
 
 \newpage
 \layout*
