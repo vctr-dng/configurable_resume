@@ -8,13 +8,22 @@
 \usepackage{hyperref}
 \usepackage{xifthen}
 \usepackage{titlesec}
-\usepackage{lipsum}
 \usepackage{layout}
+\usepackage{tabularx}
+
+\usepackage{enumitem}
+
+\setlist[itemize]{leftmargin=1.25em, labelsep=0.75em}
+
+\usepackage{blindtext}
+\usepackage[nopar]{kantlipsum}
 
 \pagestyle{fancy} % Set the page style to 'fancy'
 \fancyhf{} % Clear all header and footer fields
 \renewcommand{\headrulewidth}{0pt} % Remove the header rule line
 \setlength{\parskip}{0pt} % Set vertical space between paragraphs to zero
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \newcommand{\setfullname}[2]{%
     \newcommand{\fullname}{#1~#2}%
@@ -83,28 +92,13 @@
 
 \fancyfoot[c]{References available upon request}  % Centered footer
 
-% \titleformat{\section}[block]{\normalfont\Large\bfseries}{\thesection}{1em}{}
-% \titlespacing*{\section}{0pt}{0pt}{0pt}
+\titleformat{\section}       % Customize the \section command
+  {\fontsize{16pt}{16pt}\selectfont\raggedright}
+  {}{0em}            % No numbering
+  {}                 % No additional code before the heading
+  % [\titlerule]       % Horizontal line after the heading
 
-\titleformat{\section}       % Customise the \section command
-{\Large\scshape\raggedright} % Make the \section headers large (\Large),
-                             % small capitals (\scshape) and left aligned (\raggedright)
-  {}{0em}            % Can be used to give a prefix to all sections, like 'Section ...'
-  {}                 % Can be used to insert code before the heading
-  [\titlerule]       % Inserts a horizontal line after the heading
-  \titleformat{\subsection}
-  {\large\scshape\raggedright}
-  {}{0em}
-  {}
 \titlespacing*{\section}{0pt}{0pt}{0pt}
-\titlespacing*{\subsection}{0pt}{0pt}{0pt}
-
-\newcommand{\sectionline}[1]{
-  \noindent
-  \makebox[0pt][l]{#1} % Print the section title without advancing to the next line
-  \rule[\baselineskip]{\linewidth}{0.4pt} % Draw a horizontal line from the end of the title to the right margin
-  \vspace{1em} % Add some vertical space after the section
-}
 
 \begin{document}
 \displayfullname
@@ -112,20 +106,69 @@
 
 \vspace{0.75em}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+\kant[1][1]
+
+\vspace{0.5em}
+
+\section*{Experience\hspace{0.5em}\hrulefill}
+% \noindent\hrulefill % Horizontal rule for styling
+
+\vspace{0.35em}
+
+\begin{tabularx}{\textwidth}{@{}X r@{}} % "@" removes default padding, ensuring alignment
+	\fontsize{14pt}{0pt}\selectfont\textbf{Company} & mmmm YY – mmmm YY \\
+	Role name                                       & City, Country     \\
+\end{tabularx}
+
+\vspace{0.1em}
+
+\blinditemize[3]
 
 \vspace{0.75em}
 
-\section*{Experience}
+\begin{tabularx}{\textwidth}{@{}X r@{}} % "@" removes default padding, ensuring alignment
+	\fontsize{14pt}{0pt}\selectfont\textbf{Company} & mmmm YY – mmmm YY \\
+	Role name                                       & City, Country     \\
+\end{tabularx}
+
+\vspace{0.1em}
+
+\blinditemize[3]
 
 \vspace{0.5em}
-\subsection{Company, Location}
-Role, Date
-\begin{itemize}
-	\item
-	\item
-	\item
-\end{itemize}
+
+\section*{Education\hspace{0.5em}\hrulefill}
+% \noindent\hrulefill % Horizontal rule for styling
+
+\vspace{0.35em}
+
+\begin{tabularx}{\textwidth}{@{}X r@{}} % "@" removes default padding, ensuring alignment
+	\fontsize{14pt}{0pt}\selectfont\textbf{University} & mmmm YY – mmmm YY \\
+	Degree in Major                                    & City, Country     \\
+\end{tabularx}
+
+\vspace{0.1em}
+
+\blinditemize[3]
+
+\vspace{0.75em}
+
+\begin{tabularx}{\textwidth}{@{}X r@{}} % "@" removes default padding, ensuring alignment
+	\fontsize{14pt}{0pt}\selectfont\textbf{University} & mmmm YY – mmmm YY \\
+	Degree in Major                                    & City, Country     \\
+\end{tabularx}
+
+\vspace{0.1em}
+
+\blinditemize[3]
+
+\vspace{0.5em}
+\section*{Skills\hspace{0.5em}\hrulefill}
+
+\begin{tabularx}{\textwidth}{@{}l L{\textwidth}}
+	Category & Sub category 1, Sub category 2, Sub category 3, \\
+	Category & Sub category 1, Sub category 2, Sub category 3, \\
+\end{tabularx}
 
 \newpage
 \layout*
