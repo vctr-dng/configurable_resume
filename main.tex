@@ -10,6 +10,7 @@
 \usepackage{titlesec}
 \usepackage{layout}
 \usepackage{tabularx}
+\usepackage{etoolbox} % Required for \appto
 
 \usepackage{enumitem}
 
@@ -100,6 +101,16 @@
 
 \titlespacing*{\section}{0pt}{0pt}{0pt}
 
+\newcommand{\allskills}{}
+\newcommand{\addskill}[2]{%
+  \appto{\allskills}{#1 & #2 \\}%
+}
+
+% File: skills.tex
+\addskill{Category 1}{Subcategory 1, Subcategory 2, Subcategory 3}
+\addskill{Category 2}{Subcategory 1, Subcategory 2, Subcategory 3}
+
+
 \begin{document}
 \displayfullname
 \displaycontactinfo
@@ -166,8 +177,7 @@
 \section*{Skills\hspace{0.5em}\hrulefill}
 
 \begin{tabularx}{\textwidth}{@{}l L{\textwidth}}
-	Category & Sub category 1, Sub category 2, Sub category 3, \\
-	Category & Sub category 1, Sub category 2, Sub category 3, \\
+	\allskills
 \end{tabularx}
 
 \newpage
