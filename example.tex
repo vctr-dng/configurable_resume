@@ -1,0 +1,65 @@
+% Options: fontsize=10pt/11pt/12pt, paper=a4paper/letterpaper,
+% margin=1cm, footskip=0.25cm
+\documentclass[11pt,a4paper,margin=1cm]{resume}
+
+\RequirePackage{blindtext}
+\RequirePackage[nopar]{kantlipsum}
+
+\setfullname{John}{Doe}
+
+\location{City, Country}
+\tel{+1(234)567-890}
+\email{john.doe@mail.com}
+\github{john_doe}
+\linkedin{john_doe}
+% \website{https://johndoe.dev}
+
+\begin{document}
+
+\displaytopinfo
+
+\summarysection{
+  \kant[1][1]
+}
+
+\resumesection{Experience}{%
+  \experienceentry
+  {Company}
+  {City, Country}
+  {Role name}
+  {mm YY -- mm YY}
+  {
+    \blinditemize[3]
+  }
+}
+
+\resumesection{Projects}{%
+  \projectentry
+  {Project 1}
+  {
+    Some text here
+  }
+}
+
+\resumesection{Education}{%
+  \educationentry
+  {University}
+  {City, Country}
+  {Degree in Major}
+  {mm YY -- mm YY}
+  {
+    Some text here
+  }
+}
+
+\resumesection{Skills}{%
+  \addskill
+  {Category 1}
+  {Subcategory 1, Subcategory 2, Subcategory 3}
+
+  \insertskills
+}
+
+% \newpage
+% \layout*
+\end{document}
