@@ -1,22 +1,28 @@
-\documentclass{resume}
+% Options: fontsize=10pt/11pt/12pt, paper=a4paper/letterpaper,
+% margin=1cm, footskip=0.25cm
+\documentclass[11pt,a4paper,margin=1cm]{resume}
+
+\RequirePackage{blindtext}
+\RequirePackage[nopar]{kantlipsum}
 
 \setfullname{John}{Doe}
 
-% \location{City, Country}
-\tel{+1 234 567 890}
+\location{City, Country}
+\tel{+1(234)567-890}
 \email{john.doe@mail.com}
-\github{john\_doe}
-\linkedin{john\_doe}
+\github{john_doe}
+\linkedin{john_doe}
+% \website{https://johndoe.dev}
 
 \begin{document}
 
 \displaytopinfo
 
-% \summarysection{
-%   \kant[1][1]
-% }
+\summarysection{
+  \kant[1][1]
+}
 
-\newsection{Experience}{%
+\resumesection{Experience}{%
   \experienceentry
   {Company}
   {City, Country}
@@ -27,7 +33,7 @@
   }
 }
 
-\newsection{Projects}{%
+\resumesection{Projects}{%
   \projectentry
   {Project 1}
   {
@@ -35,7 +41,7 @@
   }
 }
 
-\newsection{Education}{%
+\resumesection{Education}{%
   \educationentry
   {University}
   {City, Country}
@@ -46,7 +52,7 @@
   }
 }
 
-\newsection{Skills}{%
+\resumesection{Skills}{%
   \addskill
   {Category 1}
   {Subcategory 1, Subcategory 2, Subcategory 3}
