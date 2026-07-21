@@ -162,7 +162,7 @@ footskip=\resume@footskip]{geometry}
 }
 
 \newcommand{\allskills}{}
-\NewDocumentCommand{\addskill}{m m}{%
+\NewDocumentCommand{\skillsentry}{m m}{%
   \appto{\allskills}{
     #1 & #2 \\[\skillsrowsep]
   }
@@ -181,7 +181,7 @@ footskip=\resume@footskip]{geometry}
   \vspace{\entryaftergap}%
 }
 
-\NewDocumentCommand{\projectentry}{m +m}{%
+\NewDocumentCommand{\projectsentry}{m +m}{%
   \begin{tabularx}{\textwidth}{@{}X@{}}%
     \fontsize{\entrytitlefontsize}{\entrytitlebaselineskip}\selectfont\textbf{#1}
   \end{tabularx}%
