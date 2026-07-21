@@ -82,14 +82,17 @@ footskip=\resume@footskip]{geometry}
   \vspace{\namesep}
 }
 
-\newcommand{\resume@contactitems}{}
+% Each contact item is stored in its own slot so that \displaycontactinfo can
+% emit them in a fixed order, independent of the order the user calls the
+% commands below. The display order is:
+%   Location, Telephone, Email, Github, Website, Linkedin
 \newcounter{resume@contactcount}
-\newcommand{\resume@addcontact}[1]{%
-  \listgadd{\resume@contactitems}{#1}%
+\newcommand{\resume@setcontact}[2]{%
+  \csgdef{resume@contact@#1}{#2}%
 }
 
 \NewDocumentCommand{\location}{m}{%
-  \resume@addcontact{#1}%
+  \resume@setcontact{location}{#1}%
 }
 \ExplSyntaxOn
 \tl_new:N \l_resume_tel_target_tl
@@ -100,38 +103,42 @@ footskip=\resume@footskip]{geometry}
   { \tl_set:Nn \l_resume_tel_target_tl {#2} }
   { }
   \tl_remove_all:Nn \l_resume_tel_target_tl { ~ }
-  \resume@addcontact{\href{tel:\tl_use:N \l_resume_tel_target_tl}{#2}}
+  \resume@setcontact{tel}{\href{tel:\tl_use:N \l_resume_tel_target_tl}{#2}}
 }
 \NewDocumentCommand{\tel}{O{} m}{%
   \resume_add_tel:nn {#1} {#2}%
 }
 \ExplSyntaxOff
 \NewDocumentCommand{\email}{m}{%
-  \resume@addcontact{\href{mailto:#1}{\nolinkurl{#1}}}%
+  \resume@setcontact{email}{\href{mailto:#1}{\nolinkurl{#1}}}%
 }
 \NewDocumentCommand{\github}{m}{%
-  \resume@addcontact{\href{https://github.com/#1}{\nolinkurl{github.com/#1}}}%
+  \resume@setcontact{github}{\href{https://github.com/#1}{\nolinkurl{github.com/#1}}}%
 }
 \NewDocumentCommand{\linkedin}{m}{%
-  \resume@addcontact{\href{https://www.linkedin.com/in/#1}{\nolinkurl{linkedin.com/in/#1}}}%
+  \resume@setcontact{linkedin}{\href{https://www.linkedin.com/in/#1}{\nolinkurl{linkedin.com/in/#1}}}%
 }
 \NewDocumentCommand{\website}{O{} m}{%
   \ifblank{#1}{%
-    \resume@addcontact{\href{#2}{\nolinkurl{#2}}}%
+    \resume@setcontact{website}{\href{#2}{\nolinkurl{#2}}}%
   }{%
-    \resume@addcontact{\href{#2}{#1}}%
+    \resume@setcontact{website}{\href{#2}{#1}}%
   }%
+}
+
+% Fixed display order for contact items, independent of call order.
+\newcommand{\resume@emitcontact}[1]{%
+  \ifcsdef{resume@contact@#1}{%
+    \ifnum\value{resume@contactcount}>0\separator\fi
+    \csuse{resume@contact@#1}%
+    \stepcounter{resume@contactcount}%
+  }{}%
 }
 
 \NewDocumentCommand{\displaycontactinfo}{}{%
   \begin{center}
     \setcounter{resume@contactcount}{0}%
-    \def\do##1{%
-      \ifnum\value{resume@contactcount}>0\separator\fi
-      ##1%
-      \stepcounter{resume@contactcount}%
-    }%
-    \dolistloop{\resume@contactitems}%
+    \forcsvlist{\resume@emitcontact}{location,tel,email,github,website,linkedin}%
   \end{center}
 }
 
