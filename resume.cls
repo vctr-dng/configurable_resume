@@ -4,7 +4,7 @@
 \RequirePackage{kvoptions}
 
 \SetupKeyvalOptions{family=resume,prefix=resume@}
-\DeclareStringOption[11pt]{fontsize}
+\DeclareStringOption[9pt]{fontsize}
 \DeclareStringOption[a4paper]{paper}
 \DeclareStringOption[1cm]{margin}
 \DeclareStringOption[]{leftmargin}
@@ -12,6 +12,8 @@
 \DeclareStringOption[]{topmargin}
 \DeclareStringOption[]{bottommargin}
 \DeclareStringOption[0.25cm]{footskip}
+\DeclareVoidOption{8pt}{\def\resume@fontsize{8pt}}
+\DeclareVoidOption{9pt}{\def\resume@fontsize{9pt}}
 \DeclareVoidOption{10pt}{\def\resume@fontsize{10pt}}
 \DeclareVoidOption{11pt}{\def\resume@fontsize{11pt}}
 \DeclareVoidOption{12pt}{\def\resume@fontsize{12pt}}
@@ -24,7 +26,7 @@
 \ifx\resume@topmargin\@empty\let\resume@topmargin\resume@margin\fi
 \ifx\resume@bottommargin\@empty\let\resume@bottommargin\resume@margin\fi
 
-\LoadClass[\resume@fontsize,\resume@paper]{article}
+\LoadClass[\resume@fontsize,\resume@paper]{extarticle}
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[\resume@paper, left=\resume@leftmargin,
