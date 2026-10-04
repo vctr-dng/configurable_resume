@@ -4,7 +4,7 @@
 \RequirePackage{kvoptions}
 
 \SetupKeyvalOptions{family=resume,prefix=resume@}
-\DeclareStringOption[11pt]{fontsize}
+\DeclareStringOption[9pt]{fontsize}
 \DeclareStringOption[a4paper]{paper}
 \DeclareStringOption[1cm]{margin}
 \DeclareStringOption[]{leftmargin}
@@ -12,6 +12,8 @@
 \DeclareStringOption[]{topmargin}
 \DeclareStringOption[]{bottommargin}
 \DeclareStringOption[0.25cm]{footskip}
+\DeclareVoidOption{8pt}{\def\resume@fontsize{8pt}}
+\DeclareVoidOption{9pt}{\def\resume@fontsize{9pt}}
 \DeclareVoidOption{10pt}{\def\resume@fontsize{10pt}}
 \DeclareVoidOption{11pt}{\def\resume@fontsize{11pt}}
 \DeclareVoidOption{12pt}{\def\resume@fontsize{12pt}}
@@ -24,7 +26,7 @@
 \ifx\resume@topmargin\@empty\let\resume@topmargin\resume@margin\fi
 \ifx\resume@bottommargin\@empty\let\resume@bottommargin\resume@margin\fi
 
-\LoadClass[\resume@fontsize,\resume@paper]{article}
+\LoadClass[\resume@fontsize,\resume@paper]{extarticle}
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[\resume@paper, left=\resume@leftmargin,
@@ -44,6 +46,24 @@ footskip=\resume@footskip]{geometry}
 \RequirePackage{tabularx}
 \RequirePackage{etoolbox}
 \RequirePackage{enumitem}
+\RequirePackage{newunicodechar}
+
+% Resume content is authored as plain UTF-8 (JSON fields, markdown
+% descriptions), but this class uses legacy 8-bit T1 fonts (psnfss/helvet)
+% rather than fontspec, so literal Unicode punctuation isn't automatically
+% mapped to the font's existing glyphs. Route it through the same TeX
+% commands \textendash etc. already use.
+\newunicodechar{–}{\textendash}
+\newunicodechar{—}{\textemdash}
+\newunicodechar{‘}{\textquoteleft}
+\newunicodechar{’}{\textquoteright}
+\newunicodechar{“}{\textquotedblleft}
+\newunicodechar{”}{\textquotedblright}
+
+% pandoc emits \tightlist inside itemize/enumerate for lists it detects as
+% "tight" (e.g. single-item lists); since \setlist below applies uniform
+% spacing to every itemize regardless, this can safely be a no-op.
+\providecommand{\tightlist}{}
 
 \input{resume-default-config.tex}
 
@@ -94,6 +114,12 @@ footskip=\resume@footskip]{geometry}
 \NewDocumentCommand{\location}{m}{%
   \resume@setcontact{location}{#1}%
 }
+% The literal "tel:" text must be tokenized outside \ExplSyntaxOn: inside it,
+% ":" has catcode 11 (letter) rather than the normal catcode 12, and that
+% wrong catcode is baked into the macro body permanently. hyperref's \href
+% then fails to recognize the scheme and falls back to treating the link as
+% a local file reference (a GoToR action) instead of a tel: URI.
+\def\resume@telscheme{tel:}
 \ExplSyntaxOn
 \tl_new:N \l_resume_tel_target_tl
 \cs_new_protected:Npn \resume_add_tel:nn #1#2
@@ -103,7 +129,9 @@ footskip=\resume@footskip]{geometry}
   { \tl_set:Nn \l_resume_tel_target_tl {#2} }
   { }
   \tl_remove_all:Nn \l_resume_tel_target_tl { ~ }
-  \resume@setcontact{tel}{\href{tel:\tl_use:N \l_resume_tel_target_tl}{#2}}
+  \exp_args:Nnx \resume@setcontact { tel }
+  { \exp_not:N \href { \resume@telscheme \l_resume_tel_target_tl } {
+  \exp_not:n {#2} } }
 }
 \NewDocumentCommand{\tel}{O{} m}{%
   \resume_add_tel:nn {#1} {#2}%
